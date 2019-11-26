@@ -5,6 +5,7 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 
 /**
  * 
@@ -41,6 +42,8 @@ public class GenericMethods {
 			element  = driver.findElement(By.name(locator));
 		}else if(type.equals("xpath")){
 			element = driver.findElement(By.xpath(locator));
+		}else if(type.equals("partialLinkText")){
+			element = driver.findElement(By.partialLinkText(locator));
 		}
 		if(checkSingleEntry(locator, type)){
 			System.out.println("Element Found and Returned");
@@ -68,7 +71,42 @@ public class GenericMethods {
 		}// other TODO 
 		return null;
 	}
+	public void assertURL(String expectedURL) {
+		String actualURL = driver.getCurrentUrl();
+		System.out.println("Runtime URL is " +actualURL);
+		Assert.assertTrue(actualURL.equals(expectedURL),"Assertion failled as the expected" );
+	}
 	
+	public void assertText(String expectedText, String locator, String type, String msg) {
+		type = type.toLowerCase();
+		
+		if(type.equals("id")){
+			String actualText = driver.findElement(By.id(locator)).getText();
+			Assert.assertTrue(actualText.equals(expectedText),msg );
+		}else if(type.equals("class")){
+			String actualText = driver.findElement(By.className(locator)).getText();
+			Assert.assertTrue(actualText.equals(expectedText),msg );
+		}else if(type.equals("name")){
+			String actualText = driver.findElement(By.name(locator)).getText();
+			Assert.assertTrue(actualText.equals(expectedText),msg );
+		}else if(type.equals("xpath")){
+			String actualText = driver.findElement(By.xpath(locator)).getText();
+			Assert.assertTrue(actualText.equals(expectedText),msg );
+		}else if(type.equals("css")){
+			String actualText = driver.findElement(By.cssSelector(locator)).getText();
+			Assert.assertTrue(actualText.equals(expectedText),msg );
+		}else if(type.equals("tagname")){
+			String actualText = driver.findElement(By.tagName(locator)).getText();
+			Assert.assertTrue(actualText.equals(expectedText),msg );
+		}else if(type.equals("linktext")){
+			String actualText = driver.findElement(By.linkText(locator)).getText();
+			Assert.assertTrue(actualText.equals(expectedText),msg );
+		}else if(type.equals("partiallinktext")){
+			String actualText = driver.findElement(By.partialLinkText(locator)).getText();
+			Assert.assertTrue(actualText.equals(expectedText),msg );
+		}
+		
+	} 
 	// return true if element exists 
 	// this method works for us when we have more than 1 element 
 	// to be found for 
